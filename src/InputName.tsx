@@ -19,28 +19,29 @@ export const InputName = () => {
             setTimeout(() => {
                 navigate("/lobby");
             }, 5000);
-
         }
     }, [playerContext.playerName]);
 
     return (
-            <div className="input-name">
-                <div className="input-prompt">
-                    {
-                        playerContext.playerName ?
-                            <>
-                                <h1>Hello {playerContext.playerName}</h1>
-                                <div>Would you like to play a game?</div>
-                                <Link ref={focusRef} className="link" to="/lobby" onKeyDown={() => navigate("/lobby")} onBlur={() => navigate("/lobby")}>Entering Lobby</Link>
-                            </>
-                            :
-                            <>
-                                <h2>What is your name?</h2>
-                                <input ref={focusRef} type="text" onBlur={(e) => playerContext.setPlayerName(e.currentTarget.value)} onKeyDown={(e) => { if (e.key === "Enter") playerContext.setPlayerName(e.currentTarget.value)}}/>
-                                <button className="primary" onClick={(e) => playerContext.setPlayerName(e.currentTarget.value)}>Submit</button>
-                            </>
-                    }
-                </div>
-            </div>
+        <div className="input-name">
+            {
+                playerContext.playerName ?
+                <div className="navigate-acknowledge">
+                            <h1>Hello {playerContext.playerName}</h1>
+                            <div>Would you like to play a game?</div>
+                            <div>
+                                <div className="opaque-background" />
+                                <div className="lobby-button-background" />
+                                <Link className="lobby-button" ref={focusRef} to="/lobby" onKeyDown={() => navigate("/lobby")} onBlur={() => navigate("/lobby")}>Entering Lobby</Link>
+                            </div>
+                        </div>
+                        :
+                        <div className="input-prompt">
+                            <h2>What is your name?</h2>
+                            <input ref={focusRef} type="text" onBlur={(e) => playerContext.setPlayerName(e.currentTarget.value)} onKeyDown={(e) => { if (e.key === "Enter") playerContext.setPlayerName(e.currentTarget.value)}}/>
+                            <button className="primary" onClick={(e) => playerContext.setPlayerName(e.currentTarget.value)}>Submit</button>
+                        </div>
+            }
+        </div>
     );
 };
