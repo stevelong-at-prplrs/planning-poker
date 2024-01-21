@@ -28,9 +28,9 @@ export const InputName = () => {
                 playerContext.playerName ?
                 <div className="navigate-acknowledge">
                             <h1>Hello {playerContext.playerName}</h1>
-                            <div>Would you like to play a game?</div>
+                            <div style={{"margin": "1rem"}}>Would you like to play a game?</div>
                             <div>
-                                <div className="opaque-background" />
+                                {/* <div className="opaque-background" /> */}
                                 <div className="lobby-button-background" />
                                 <Link className="lobby-button" ref={focusRef} to="/lobby" onKeyDown={() => navigate("/lobby")} onBlur={() => navigate("/lobby")}>Entering Lobby</Link>
                             </div>

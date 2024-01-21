@@ -92,7 +92,6 @@ export const Lobby = () => {
                 </section>
             </section>
             <section className="lobby">
-                <div>Start a game</div>
                 <button className="primary" onClick={() => {
                     const newGame = push(gamesRef);
                     const newGameRef = ref(db, `games/${newGame.key}`);

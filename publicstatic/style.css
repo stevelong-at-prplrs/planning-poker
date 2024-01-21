@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #f2f2f2;
+    background-color: #f9fff6;
 }
 
 div#app {
@@ -104,24 +104,12 @@ button:active {
     }
 }
 
-div.opaque-background {
-    background-color: #ccc;
-    padding: 1rem;
-    border-radius: 5px;
-    font-size: larger;
-    color: white;
-    width: 177.2px;
-    height: 55px;
-}
-
 div.lobby-button-background {
     background-color: gray;
     padding: 1rem;
     border-radius: 5px;
     font-size: larger;
     color: white;
-    position: relative;
-    top: -55px;
     height: 55px;
     animation: animateWidth 4s ease-in-out;
 }
@@ -132,7 +120,7 @@ div.lobby-button-background {
     padding: 1rem;
     text-decoration: none;
     position: relative;
-    top: -94px;
+    top: -39px;
 }
 
 .lobby-button:focus-visible, .lobby-button:hover {
@@ -196,7 +184,7 @@ section.players {
 }
 
 section.connectedplayers, section.games {
-    border: 1px solid #ccc;
+    border: 1px solid chartreuse;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -205,6 +193,7 @@ section.connectedplayers, section.games {
     padding: 1rem;
     width: 45vw;
     max-width: 600px;
+    min-height: 110px;
 }
 
 @media (max-width: 640px) {
