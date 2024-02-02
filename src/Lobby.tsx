@@ -28,9 +28,9 @@ export const Lobby = () => {
         if (playerContext?.playerName) {
             onValue(connectedRef, (snapshot) => {
                 if (snapshot.val() === true) {
-                    set(myConnection, {name: playerContext.playerName});
+                    set(myConnection, { name: playerContext.playerName });
                     playerContext.setPlayerId(myConnection.key);
-            
+
                     onDisconnect(myConnectionRef).remove();
                 }
             });
@@ -39,21 +39,21 @@ export const Lobby = () => {
 
     React.useEffect(() => {
         return onValue(connectionsRef, (snapshot) => {
-          if (connections.length === 0 && snapshot.exists()) {
-              const dataEntries = Object.entries(snapshot.val());
-              setConnections(dataEntries);
-          }
+            if (connections.length === 0 && snapshot.exists()) {
+                const dataEntries = Object.entries(snapshot.val());
+                setConnections(dataEntries);
+            }
         });
-      }, []);
+    }, []);
 
     React.useEffect(() => {
         return onValue(gamesRef, (snapshot) => {
-          if (games.length === 0 && snapshot.exists()) {
-              const dataEntries = Object.entries(snapshot.val());
-              setGames(dataEntries);
-          }
+            if (games.length === 0 && snapshot.exists()) {
+                const dataEntries = Object.entries(snapshot.val());
+                setGames(dataEntries);
+            }
         });
-      }, []);
+    }, []);
 
     return playerName ? (
         <>
@@ -72,7 +72,8 @@ export const Lobby = () => {
                                     const [connectionKey, playerObj] = connection;
                                     return (
                                         playerName === playerObj.name && connectionKey === myConnection.key ? <li key={index}><strong>{playerObj.name}: {connectionKey} (This is you)</strong></li> : <li key={index}>{playerObj.name}: {connectionKey}</li>
-                                );})}
+                                    );
+                                })}
                             </ul>
                         </>
                     }
@@ -103,17 +104,17 @@ export const Lobby = () => {
                         showing: false
                     };
                     set(newGameRef, game);
-                    gameContext.setMyGame({[newGame.key]: game});
+                    gameContext.setMyGame({ [newGame.key]: game });
                 }}>Start new game</button>
             </section>
         </>
     ) :
-    (
-        <>
-            <div>Please enter your name</div>
-            <div>
-                <Link to="/">Go to app</Link>
-            </div>
-        </>
-    );
+        (
+            <>
+                <div>Please enter your name</div>
+                <div>
+                    <Link to="/">Click Here</Link>
+                </div>
+            </>
+        );
 };

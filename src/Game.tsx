@@ -10,7 +10,7 @@ export interface IPlayerContext {
     setPlayerName: (name: string) => void;
     playerId: string;
     setPlayerId: (id: string) => void;
-  }
+}
 
 export const Game = () => {
 
@@ -22,13 +22,13 @@ export const Game = () => {
 
     const [gamePlayers, setGamePlayers] = React.useState([]);
     const [choice, setChoice] = React.useState<number>();
-    
+
     const myConnectionRef = ref(db, `connections/${playerContext.playerId}`);
-    set(myConnectionRef, {name: playerContext.playerName, gameId: id});
+    set(myConnectionRef, { name: playerContext.playerName, gameId: id });
 
     const setMyChoice = (option: number) => {
         const myPlayerRef = ref(db, `games/${id}/players/${playerContext.playerId}`);
-        set(myPlayerRef, {name: playerContext.playerName, optionIdChosen: option});
+        set(myPlayerRef, { name: playerContext.playerName, optionIdChosen: option });
         setChoice(option);
     };
 
@@ -59,12 +59,12 @@ export const Game = () => {
                 const game = snapshot.val();
                 let players = game.players;
                 if (!players || !Object.keys(players).some((key) => key === playerContext.playerId)) {
-                    const newPlayer = {name: playerContext.playerName, optionIdChosen: null};
+                    const newPlayer = { name: playerContext.playerName, optionIdChosen: null };
                     set(ref(db, `games/${id}/players/${playerContext.playerId}`), newPlayer);
-                    players = players ? {...players, [playerContext.playerId]: newPlayer} : {newPlayer};
+                    players = players ? { ...players, [playerContext.playerId]: newPlayer } : { newPlayer };
                     game.players = players;
                 }
-                gameContext.setMyGame({[id]: game});
+                gameContext.setMyGame({ [id]: game });
                 const playersArr = Object.entries(game.players);
                 if (playersNeedUpdate(playersArr, gamePlayers)) setGamePlayers(playersArr);
             }
@@ -74,10 +74,10 @@ export const Game = () => {
     React.useEffect(() => {
         return onValue(myGameRef, (snapshot) => {
             if (snapshot.exists()) {
-                if (gameNeedsUpdate(snapshot.val(), gameContext?.myGame && gameContext.myGame[id])) gameContext.setMyGame({[id]: snapshot.val()});
+                if (gameNeedsUpdate(snapshot.val(), gameContext?.myGame && gameContext.myGame[id])) gameContext.setMyGame({ [id]: snapshot.val() });
             }
         });
-      }, []);
+    }, []);
 
     React.useEffect(() => {
         const myPlayerRef = ref(db, `games/${id}/players/${playerContext.playerId}`);
@@ -93,7 +93,7 @@ export const Game = () => {
     return (
         <>
             <section className="game-ui">
-                { id ? <h2>Game ID: {id}</h2> : ""}
+                {id ? <h2>Game ID: {id}</h2> : ""}
                 <div>
                     <Link to="/lobby">Back to lobby</Link>
                 </div>
@@ -103,49 +103,53 @@ export const Game = () => {
                         {gamePlayers && gamePlayers.map((player, index) => {
                             const [gamePlayerId, gamePlayerObj] = player;
                             return (
-                                <li className="player-list-item" key={index}>{(playerContext.playerId === gamePlayerId ? <strong>{gamePlayerObj?.name}</strong> : gamePlayerObj?.name)} {(gameContext?.myGame[id]?.showing ? <strong>{gamePlayerObj?.optionIdChosen ?? ""}</strong> : <strong>{gamePlayerObj?.optionIdChosen ? " *" : ""}</strong>)}{}</li>
+                                <li className="player-list-item" key={index}>
+                                    {(playerContext.playerId === gamePlayerId ? <strong>{gamePlayerObj?.name}</strong> : gamePlayerObj?.name)}
+                                    {(gameContext?.myGame[id]?.showing ? <strong>{gamePlayerObj?.optionIdChosen ?? ""}</strong> : <strong>{gamePlayerObj?.optionIdChosen ? " *" : ""}</strong>)}
+                                </li>
                             );
                         }
                         )}
                     </ul>
                 </section>
                 <section className="action-buttons">
-                <button className="primary" onClick={() => {
-                    const game = gameContext?.myGame && gameContext.myGame[id];
-                    if (game) {
-                        game.showing = !game.showing;
-                        gameContext.setMyGame({[id]: game});
-                        set(ref(db, `games/${id}`), game);
-                    }
-                }}>{gameContext?.myGame && gameContext.myGame[id]?.showing ? "Hide all" : "Reveal all"}</button>
-                <button className="primary" onClick={() => {
-                    const game = gameContext?.myGame && gameContext.myGame[id];
-                    if (game) {
-                        const players = game.players;
-                        if (players) {
-                            Object.keys(players).forEach((playerId) => {
-                                const player = players[playerId];
-                                player.optionIdChosen = null;
-                            });
-                            game.players = players;
+                    <button className="primary" onClick={() => {
+                        const game = gameContext?.myGame && gameContext.myGame[id];
+                        if (game) {
+                            game.showing = !game.showing;
+                            gameContext.setMyGame({ [id]: game });
+                            set(ref(db, `games/${id}`), game);
                         }
-                        game.showing = false;
-                        set(ref(db, `games/${id}`), game);
-                    }
-                }}>Clear all</button>
+                    }}>{gameContext?.myGame && gameContext.myGame[id]?.showing ? "Hide all" : "Reveal all"}</button>
+                    <button className="primary" onClick={() => {
+                        const game = gameContext?.myGame && gameContext.myGame[id];
+                        if (game) {
+                            const players = game.players;
+                            if (players) {
+                                Object.keys(players).forEach((playerId) => {
+                                    const player = players[playerId];
+                                    player.optionIdChosen = null;
+                                });
+                                game.players = players;
+                            }
+                            game.showing = false;
+                            set(ref(db, `games/${id}`), game);
+                        }
+                    }}>Clear all</button>
                 </section>
                 <h3>Options:</h3>
             </section>
             <section className="options">
-            {gameContext?.myGame && gameContext.myGame[id] && gameContext.myGame[id].options.map((option) => {
-                return (
-                <button
-                    className={"card" + (option === choice ? " selected" : "")}
-                    key={`optionButton${option}`}
-                    onClick={() => setMyChoice(option)}>{option}</button>
+                {gameContext?.myGame && gameContext.myGame[id] && gameContext.myGame[id].options.map((option) => {
+                    return (
+                        <button
+                            className={"card" + (option === choice ? " selected" : "")}
+                            key={`optionButton${option}`}
+                            onClick={() => setMyChoice(option)}>{option}</button>
+                    )
+                }
                 )}
-            )}
-        </section>
-    </>
+            </section>
+        </>
     );
 };
