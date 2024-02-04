@@ -1,7 +1,6 @@
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ReactRefreshTypeScript = require('react-refresh-typescript');
-// const isDevelopment = process.env.NODE_ENV !== 'production';
-const isDevelopment = true;
+const isDevelopment = process.env.NODE_ENV !== 'production';
 const path = require('path');
 const webpack = require('webpack');
 require('dotenv').config({ path: './.env' });
